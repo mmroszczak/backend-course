@@ -86,7 +86,7 @@ const App = () => {
 
       phonebookServices.remove(id)
       .then(id => {
-        const updatedPersons = persons.filter(p => p.id ==! id)
+        const updatedPersons = persons.filter(p => p.id !== id)
         setPersons(updatedPersons)
         setNotificationType('confirm')
         setNotificationMessage(
