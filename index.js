@@ -1,7 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 app.use(express.json())
+app.use(cors())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 
@@ -28,13 +30,19 @@ let persons = [
     }
 ]
 
+const morganLogBody = (morgan.token('body', request => (JSON.stringify(request.body))))
+
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+    morganLogBody()
 })
 
 app.get('/info', (request, response) => {
     const resp = `The phonebook has info for ${persons.length} people<br/> ${new Date()}`
     response.send(resp)
+    morganLogBody()
+
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -46,6 +54,8 @@ app.get('/api/persons/:id', (request, response) => {
     } else{
         response.status(404).end()
     }
+    morganLogBody()
+
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -53,6 +63,7 @@ app.delete('/api/persons/:id', (request, response) => {
     persons = persons.filter(person => (Number(person.id) !== id))
     console.log(persons)
     response.status(204).end()
+    morganLogBody()
 
 })
 
@@ -80,10 +91,11 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person)
     console.log(persons)
     response.json(person)
-    morgan.token('body', request => (JSON.stringify(request.body)))
+    morganLogBody()
 })
 
 
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT || 3001 
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
