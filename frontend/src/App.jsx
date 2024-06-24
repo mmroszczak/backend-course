@@ -132,15 +132,12 @@ const App = () => {
           setPersons(updatedPersons)
         })
         .catch(error => {
-          console.log(error)
+          console.log(error.response.data.error)
           setNotificationType('error')
-          setNotificationMessage(
-            `'${newPerson.name}' was removed from server`
-          )
+          setNotificationMessage(error.response.data.error)
           setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)
-          setPersons(persons.filter(p => p.id !== id))
         })
       }
     }
@@ -157,6 +154,15 @@ const App = () => {
         setTimeout(() => {
           setNotificationMessage(null)
         }, 5000)
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+        setNotificationType('error')
+        setNotificationMessage(error.response.data.error)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+
       })
     }
 
