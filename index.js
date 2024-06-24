@@ -47,7 +47,8 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    persons = persons.filter(person => person.id ==! id)
+    persons = persons.filter(person => (Number(person.id) !== id))
+    console.log(persons)
     response.status(204).end()
 
 })
@@ -55,14 +56,26 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
+    if(persons.some(person => (person.name === body.name))){
+        return response.status(403).json({
+            error: "name already in the phonebook"
+        })
+    }else{if(!(body.number && body.name)){
+        return response.status(400).json({
+            error: "name or number not specified"
+        })
+    }}
+
     const id = Math.floor(Math.random() * 10000000)
     const person = {
+        id: id,
         name: body.name,
-        number: body.number,
-        id: id
+        number: body.number
     }
 
-    persons.concat(person)
+    console.log(person)
+    persons = persons.concat(person)
+    console.log(persons)
     response.json(person)
 })
 
