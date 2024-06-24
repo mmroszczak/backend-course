@@ -1,13 +1,28 @@
-GET http://localhost:3001/api/persons/
+GET http://localhost:3001/api/persons/66798bfd46ff939d106c7f3e
 
 ###
-DELETE http://localhost:3001/api/persons/1
+DELETE http://localhost:3001/api/persons/66798c1846ff939d106c7f47
 
 ###
 POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Arno Newman",
+    "name": "Gary Oldman",
     "number": "075-1998-9089"
 }
+
+###
+PUT http://localhost:3001/api/persons/66798bfd46ff939d106c7f3e HTTP/1.1
+content-type: application/json
+
+{
+    "name": "NewPerson",
+    "number": "000-0000-00"
+}
+
+###
+GET http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/info

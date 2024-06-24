@@ -65,7 +65,10 @@ const App = () => {
 
   useEffect(() => {
     phonebookServices.getAll()
-    .then(serverPersons => setPersons(serverPersons))
+    .then(serverPersons => {
+      setPersons(serverPersons)
+      }
+      )
   })
 
   const handleNameChange = (event) => {
@@ -129,6 +132,7 @@ const App = () => {
           setPersons(updatedPersons)
         })
         .catch(error => {
+          console.log(error)
           setNotificationType('error')
           setNotificationMessage(
             `'${newPerson.name}' was removed from server`
